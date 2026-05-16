@@ -3,6 +3,7 @@ package com.example.audioanalyzercompanion
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.github.mikephil.charting.charts.BarChart
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,12 +26,12 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var insightsList: TextView
     private lateinit var aiSummary: TextView
     private lateinit var aiBullets: TextView
+    private lateinit var metricsChart: BarChart
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        // Show back button in action bar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.analysis_details_title)
 
@@ -50,6 +51,10 @@ class DetailActivity : AppCompatActivity() {
         insightsList = findViewById(R.id.insightsList)
         aiSummary = findViewById(R.id.aiSummary)
         aiBullets = findViewById(R.id.aiBullets)
+        metricsChart = findViewById(R.id.metricsChart)
+
+        // Setup chart
+        MetricsChartHelper.setupChart(metricsChart)
 
         // Get analysis ID from intent
         val analysisId = intent.getIntExtra("ANALYSIS_ID", -1)
@@ -115,5 +120,39 @@ class DetailActivity : AppCompatActivity() {
         aiSummary.text = analysis.ai_advice.summary
         val bulletsText = analysis.ai_advice.bullets.joinToString("\n• ") { "• $it" }
         aiBullets.text = bulletsText
+
+        // Setup chart
+        setupMetricsChart(analysis)
+    }
+
+    private fun setupMetricsChart(analysis: AnalysisDetail) {
+        val userMetrics = analysis.metrics.user
+        val referenceMetrics = analysis.metrics.reference
+
+        // Add more metrics for better comparison
+        val labels = listOf("LUFS", "RMS", "Stereo Width", "Crest Factor")
+
+        val userValues = listOf(
+            normalizeLufs(userMetrics.lufs),
+            userMetrics.rms.toFloat(),
+            userMetrics.stereo_width.toFloat(),
+            userMetrics.crest_factor.toFloat().coerceAtMost(15f)
+        )
+
+        val referenceValues = listOf(
+            normalizeLufs(referenceMetrics.lufs),
+            referenceMetrics.rms.toFloat(),
+            referenceMetrics.stereo_width.toFloat(),
+            referenceMetrics.crest_factor.toFloat().coerceAtMost(15f)
+        )
+
+        MetricsChartHelper.setChartData(metricsChart, userValues, referenceValues, labels)
+    }
+
+    private fun normalizeLufs(lufs: Double): Float {
+        // LUFS is typically negative (e.g., -30 to -10)
+        // Convert to positive scale for better visualization
+        val normalized = (lufs + 40).toFloat()
+        return normalized.coerceIn(0f, 50f)
     }
 }

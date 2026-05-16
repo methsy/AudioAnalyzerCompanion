@@ -32,7 +32,21 @@ class AnalysisAdapter(
         val analysis = analyses[position]
         val context = holder.itemView.context
 
-        // Use string resources with placeholders
+        // Get colors based on score
+        val cardColor = ScoreColorHelper.getColorForScore(analysis.overall)
+        val textColor = ScoreColorHelper.getTextColorForScore(analysis.overall)
+
+        // Apply background color to CardView
+        holder.cardView.setCardBackgroundColor(cardColor)
+
+        // Apply text color to all TextViews
+        holder.idText.setTextColor(textColor)
+        holder.userTrackText.setTextColor(textColor)
+        holder.referenceTrackText.setTextColor(textColor)
+        holder.scoreText.setTextColor(textColor)
+        holder.dateText.setTextColor(textColor)
+
+        // Set text content
         holder.idText.text = context.getString(R.string.analysis_number, analysis.analysis_id)
         holder.userTrackText.text = context.getString(R.string.user_track_label, analysis.user_filename ?: context.getString(R.string.unknown))
         holder.referenceTrackText.text = context.getString(R.string.reference_track_label, analysis.reference_filename ?: context.getString(R.string.unknown))
