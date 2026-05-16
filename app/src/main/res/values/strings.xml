@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">AudioAnalyzerCompanion</string>
+
+    <!-- Analysis list screen (adapter) -->
+    <string name="analysis_number">Analysis #%d</string>
+    <string name="user_track_label">User: %s</string>
+    <string name="reference_track_label">Reference: %s</string>
+    <string name="score_label">Score: %.1f</string>
+
+    <!-- Detail screen -->
+    <string name="analysis_details_title">Analysis Details</string>
+    <string name="status_label">Status</string>
+    <string name="scores_label">Scores</string>
+    <string name="overall_score_label">Overall:</string>
+    <string name="production_score_label">Production:</string>
+    <string name="mix_score_label">Mix:</string>
+    <string name="loudness_score_label">Loudness:</string>
+    <string name="tonal_score_label">Tonal:</string>
+    <string name="dynamics_score_label">Dynamics:</string>
+    <string name="stereo_score_label">Stereo:</string>
+    <string name="tracks_label">Tracks</string>
+    <string name="insights_label">Insights</string>
+    <string name="ai_advice_label">AI Advice</string>
+    <string name="created_label">Created: %s</string>
+
+    <!-- Generic -->
+    <string name="unknown">Unknown</string>
+    <string name="loading">Loading...</string>
+    <string name="error">Error</string>
+</resources>
