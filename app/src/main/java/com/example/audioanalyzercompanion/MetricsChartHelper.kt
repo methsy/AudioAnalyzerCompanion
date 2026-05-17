@@ -9,8 +9,22 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 
+/**
+ * Helper object for configuring and populating [BarChart] instances using the MPAndroidChart library.
+ *
+ * This utility provides standardized configuration for charts used to compare audio metrics
+ * between a user track and a reference track.
+ */
 object MetricsChartHelper {
 
+    /**
+     * Configures the visual styling and behavior of a [BarChart].
+     *
+     * This method sets up the X and Y axes, disables unnecessary components like the legend
+     * and right axis, and applies standardized offsets and animations for a consistent UI.
+     *
+     * @param chart The [BarChart] instance to be configured.
+     */
     fun setupChart(chart: BarChart) {
         chart.apply {
             description.isEnabled = false
@@ -53,6 +67,18 @@ object MetricsChartHelper {
         }
     }
 
+    /**
+     * Populates the [BarChart] with data comparing user metrics against reference metrics.
+     *
+     * This method creates two datasets (User and Reference), groups them side-by-side for each
+     * metric, applies custom color schemes, and formats the value labels. It also configures
+     * the X-axis labels and ensures the chart is refreshed and positioned correctly.
+     *
+     * @param chart The [BarChart] to populate with data.
+     * @param userValues A list of floating-point values representing the user's audio metrics.
+     * @param referenceValues A list of floating-point values representing the reference audio metrics.
+     * @param labels A list of strings used as labels for the X-axis (e.g., metric names).
+     */
     fun setChartData(
         chart: BarChart,
         userValues: List<Float>,
